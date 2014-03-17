@@ -1,0 +1,55 @@
+#+TITLE: Pathfinder Character Sheet
+#+AUTHOR: Jesus Ramos
+
+# Just fill in the relevant information in the tables and recalculate all tables
+
+* Basic Character Info
+
+* Character Stats
+  #+NAME:Stats
+  |---+--------------+-------+----------+------+----------+---------+------|
+  | ! | Stat         | Total | Modifier | Base | Inherent | Enhance | Misc |
+  |---+--------------+-------+----------+------+----------+---------+------|
+  | # | Strength     |    14 |        2 |   14 |          |         |      |
+  | # | Dexterity    |    10 |        0 |   10 |          |         |      |
+  | # | Constitution |    14 |        2 |   14 |          |         |      |
+  | # | Intelligence |    10 |        0 |   10 |          |         |      |
+  | # | Wisdom       |    10 |        0 |   10 |          |         |      |
+  | # | Charisma     |    14 |        2 |   14 |          |         |      |
+  |---+--------------+-------+----------+------+----------+---------+------|
+  #+TBLFM: @2$3..@2$3=vsum($5..$8)::@2$4..@7$4=floor(($3 - 10) / 2)
+
+* Class
+  # This table won't recalculate automatically, just hit TAB on the last row to recalculate
+  #+NAME:Class
+  |---+-----------+-----+---------------+-----+--------+------+-----+------+--------|
+  | ! | HP Gained | HD  | Class Name    | BAB | Skills | Fort | Ref | Will | Levels |
+  |---+-----------+-----+---------------+-----+--------+------+-----+------+--------|
+  |   |        49 | d10 | Paladin       |   5 |     10 |    4 |   1 |    4 |      5 |
+  |---+-----------+-----+---------------+-----+--------+------+-----+------+--------|
+  |   |    Totals |     | Favored Class |     |        |      |     |      |        |
+  |---+-----------+-----+---------------+-----+--------+------+-----+------+--------|
+  | # |        49 |     |               |   5 |     10 |    4 |   1 |    4 |      5 |
+  |---+-----------+-----+---------------+-----+--------+------+-----+------+--------|
+  #+TBLFM: @>$2=vsum(@2..@-2)::@>$5..$10=vsum(@2..@-2)
+
+* Defense
+  #+NAME:Saves
+  |---+---------------+-------+------+---------+---------+------|
+  | ! | Saving Throws | Total | Base | Ability | Enhance | Misc |
+  |---+---------------+-------+------+---------+---------+------|
+  | # | Fortitude     |     6 |    4 |       2 |         |      |
+  | # | Reflex        |     1 |    1 |       0 |         |      |
+  | # | Will          |     4 |    4 |       0 |         |      |
+  |---+---------------+-------+------+---------+---------+------|
+  #+TBLFM: $5=remote(Stats,@3$Modifier)::@2$3..@4$3=vsum($4..$7)::@2$4=remote(Class, @>$Fort)::@2$5=remote(Stats, @4$Modifier)::@3$4=remote(Class, @>$Ref)::@4$4=remote(Class, @>$Will)::@4$5=remote(Stats, @6$Modifier)
+
+* Attacks
+  |---+--------+-------+-------------------+---------+------+------|
+  | ! |        | Total | Base Attack Bonus | Ability | Size | Misc |
+  |---+--------+-------+-------------------+---------+------+------|
+  | # | Melee  |     7 |                 5 |       2 |      |      |
+  | # | Ranged |     5 |                 5 |       0 |      |      |
+  | # | CMB    |     7 |                 5 |       2 |      |      |
+  |---+--------+-------+-------------------+---------+------+------|
+  #+TBLFM: @2$3..@4$3=vsum($4..$7)::@2$4..@4$4=remote(Class, @>$BAB)::@2$5=remote(Stats, @2$Modifier)::@3$5=remote(Stats, @3$Modifier)::@4$5=remote(Stats, @2$Modifier)
