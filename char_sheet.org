@@ -2,6 +2,7 @@
 #+AUTHOR: Jesus Ramos
 
 # Just fill in the relevant information in the tables and recalculate all tables
+# M-x org-table-recalculate-buffer-tables
 
 * Basic Character Info
   - Name :: Tsardok
@@ -42,7 +43,7 @@
   |---+--------+-----+---------------+-----+--------+------+-----+------+--------|
   | # |     49 |     | Paladin       |   5 |     10 |    4 |   1 |    4 |      5 |
   |---+--------+-----+---------------+-----+--------+------+-----+------+--------|
-  #+TBLFM: @>$2=vsum(@2..@-2)::@>$5..$10=vsum(@2..@-2)
+  #+TBLFM: @>$2=vsum(@2..@-2)::@>$5..@>$10=vsum(@2..@-2)
 
 * Defense
   #+NAME:Saves
@@ -55,10 +56,11 @@
   |---+---------------+-------+------+---------+---------+------|
   #+TBLFM: $5=remote(Stats,@3$Modifier)::@2$3..@4$3=vsum($4..$7)::@2$4=remote(Class, @>$Fort)::@2$5=remote(Stats, @4$Modifier)::@3$4=remote(Class, @>$Ref)::@4$4=remote(Class, @>$Will)::@4$5=remote(Stats, @6$Modifier)
 
-    #+NAME:HP
+  #+NAME:HP
   |---+--------------+----|
   | # | Base         | 49 |
   |   | Temporary HP |    |
+  |---+--------------+----|
   | # | Total        | 49 |
   |---+--------------+----|
   #+TBLFM: @1$3=remote(Class, @2$HP)::@3$3=@1$3+@2$3
@@ -68,47 +70,104 @@
   |---+--------+-------+-------------------+---------+------+------|
   | ! |        | Total | Base Attack Bonus | Ability | Size | Misc |
   |---+--------+-------+-------------------+---------+------+------|
-  | # | Melee  |     7 |                 5 |       2 |      |      |
+  | # | Melee  |     8 |                 5 |       3 |      |      |
   | # | Ranged |     5 |                 5 |       0 |      |      |
-  | # | CMB    |     7 |                 5 |       2 |      |      |
+  | # | CMB    |     8 |                 5 |       3 |      |      |
   |---+--------+-------+-------------------+---------+------+------|
   #+TBLFM: @2$3..@4$3=vsum($4..$7)::@2$4..@4$4=remote(Class, @>$BAB)::@2$5=remote(Stats, @2$Modifier)::@3$5=remote(Stats, @3$Modifier)::@4$5=remote(Stats, @2$Modifier)
 
 * Skills
   # To mark as a class skill just put a 1 in the class column, org mode doesn't
-  # support checkboxes in tables yet
+  # support checkboxes in tables yet. You can add or change the ability the
+  # stat depends on by modifying the Stat column.
   #+NAME:Skills
-  |---+-------+------------------+------+-------+-------+---------+---------+------|
-  | ! | Class | Skill            | Stat | Total | Ranks | Ability | Trained | Misc |
-  |---+-------+------------------+------+-------+-------+---------+---------+------|
-  | # |       | Acrobatics       | Dex  |       |       |         |         |      |
-  | # |       | Appraise         | Int  |       |       |         |         |      |
-  | # |       | Bluff            | Cha  |       |       |         |         |      |
-  | # |       | Climb            | Str  |       |       |         |         |      |
-  | # |       | Craft:           | Int  |       |       |         |         |      |
-  | # |       | Craft:           | Int  |       |       |         |         |      |
-  | # |       | Diplomacy        | Cha  |       |       |         |         |      |
-  | # |       | Disable Device   | Dex  |       |       |         |         |      |
-  | # |       | Disguise         | Cha  |       |       |         |         |      |
-  | # |       | Escape Artist    | Dex  |       |       |         |         |      |
-  | # |       | Fly              | Dex  |       |       |         |         |      |
-  | # |       | Handle Animal    | Cha  |       |       |         |         |      |
-  | # |       | Heal             | Wis  |       |       |         |         |      |
-  | # |       | Intimidate       | Cha  |       |       |         |         |      |
-  | # |       | Knowledge:       | Int  |       |       |         |         |      |
-  | # |       | Knowledge:       | Int  |       |       |         |         |      |
-  | # |       | Knowledge:       | Int  |       |       |         |         |      |
-  | # |       | Linguistics      | Int  |       |       |         |         |      |
-  | # |       | Perception       | Wis  |       |       |         |         |      |
-  | # |       | Perform:         | Cha  |       |       |         |         |      |
-  | # |       | Profession:      | Wis  |       |       |         |         |      |
-  | # |       | Ride             | Dex  |       |       |         |         |      |
-  | # |       | Sense Motive     | Wis  |       |       |         |         |      |
-  | # |       | Sleight of Hand  | Dex  |       |       |         |         |      |
-  | # |       | Spellcraft       | Int  |       |       |         |         |      |
-  | # |       | Stealth          | Dex  |       |       |         |         |      |
-  | # |       | Survival         | Wis  |       |       |         |         |      |
-  | # |       | Swim             | Str  |       |       |         |         |      |
-  | # |       | Use Magic Device | Cha  |       |       |         |         |      |
-  |---+-------+------------------+------+-------+-------+---------+---------+------|
-  #+TBLFM: @2$8..@>$8=if($2 > 0 && $6 > 0, 3, string(""));
+  |---+-------+---------------------+------+-------+-------+---------+---------+------|
+  | ! | Class | Skill               | Stat | Total | Ranks | Ability | Trained | Misc |
+  |---+-------+---------------------+------+-------+-------+---------+---------+------|
+  | # |       | Acrobatics          | Dex  |     0 |       |       0 |         |      |
+  | # |       | Appraise            | Int  |     0 |       |       0 |         |      |
+  | # |       | Bluff               | Cha  |     2 |       |       2 |         |      |
+  | # |       | Climb               | Str  |     3 |       |       3 |         |      |
+  | # |     1 | Craft:              | Int  |     0 |       |       0 |         |      |
+  | # |       | Craft:              | Int  |     0 |       |       0 |         |      |
+  | # |     1 | Diplomacy           | Cha  |    10 |     5 |       2 |       3 |      |
+  | # |       | Disable Device      | Dex  |     0 |       |       0 |         |      |
+  | # |       | Disguise            | Cha  |     2 |       |       2 |         |      |
+  | # |       | Escape Artist       | Dex  |     0 |       |       0 |         |      |
+  | # |       | Fly                 | Dex  |     0 |       |       0 |         |      |
+  | # |     1 | Handle Animal       | Cha  |     8 |     3 |       2 |       3 |      |
+  | # |     1 | Heal                | Wis  |     0 |       |       0 |         |      |
+  | # |       | Intimidate          | Cha  |     4 |       |       2 |         |    2 |
+  | # |     1 | Knowledge: Nobility | Int  |     4 |     1 |       0 |       3 |      |
+  | # |     1 | Knowledge: Religion | Int  |     4 |     1 |       0 |       3 |      |
+  | # |       | Linguistics         | Int  |     0 |       |       0 |         |      |
+  | # |       | Perception          | Wis  |     0 |       |       0 |         |      |
+  | # |       | Perform:            | Cha  |     2 |       |       2 |         |      |
+  | # |     1 | Profession:         | Wis  |     0 |       |       0 |         |      |
+  | # |     1 | Ride                | Dex  |     0 |       |       0 |         |      |
+  | # |     1 | Sense Motive        | Wis  |     0 |       |       0 |         |      |
+  | # |       | Sleight of Hand     | Dex  |     0 |       |       0 |         |      |
+  | # |     1 | Spellcraft          | Int  |     0 |       |       0 |         |      |
+  | # |       | Stealth             | Dex  |     0 |       |       0 |         |      |
+  | # |       | Survival            | Wis  |     0 |       |       0 |         |      |
+  | # |       | Swim                | Str  |     3 |       |       3 |         |      |
+  | # |       | Use Magic Device    | Cha  |     2 |       |       2 |         |      |
+  |---+-------+---------------------+------+-------+-------+---------+---------+------|
+  #+TBLFM: @2$5..@>$5=vsum($6..$9)::@2$7..@>$7='(cond ((string= $4 "Str") remote(Stats, @2$Modifier)) ((string= $4 "Dex") remote(Stats, @3$Modifier)) ((string= $4 "Int") remote(Stats, @5$Modifier)) ((string= $4 "Wis") remote(Stats, @6$Modifier)) ((string= $4 "Cha") remote(Stats, @7$Modifier)))::@2$8..@>$8=if($2 > 0 && $6 > 0, 3, string(""))
+
+* Inventory
+
+** Equipment
+   # Just add new rows for new items
+   #+NAME:Equipment
+   |---+----------+------+---------------|
+   | ! | Quantity | Name | Weight        |
+   |---+----------+------+---------------|
+   |   |          |      |               |
+   |---+----------+------+---------------|
+   |   |          |      | Total Weight: |
+   |---+----------+------+---------------|
+   | # |          |      | 0             |
+   |---+----------+------+---------------|
+   #+TBLFM: @4$4=vsum(@2$4..@-2$4)
+
+   # Worn magic items
+   #+NAME: WornEquipment
+   |-----------+---|
+   | Head      |   |
+   | Face      |   |
+   | Throat    |   |
+   | Shoulders |   |
+   | Body      |   |
+   | Torso     |   |
+   | Arms      |   |
+   | Hands     |   |
+   | Ring      |   |
+   | Ring      |   |
+   | Waist     |   |
+   | Feet      |   |
+   |-----------+---|
+
+
+** Magic Items
+
+** Wealth
+   #+NAME: Wealth
+   |----------+---|
+   | Platinum |   |
+   | Gold     |   |
+   | Silver   |   |
+   | Copper   |   |
+   |----------+---|
+
+** Bags and Containers
+   #+NAME: Bags
+   |-----------+--------+--------|
+   | Container | Volume | Weight |
+   |-----------+--------+--------|
+   |           |        |        |
+   |-----------+--------+--------|
+
+* Spells
+
+* Notes
