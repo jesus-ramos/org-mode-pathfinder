@@ -1,3 +1,7 @@
+# Local Variables:
+# org-fontify-emphasized-text: nil
+# End:
+
 #+TITLE: Pathfinder Character Sheet
 #+AUTHOR: Jesus Ramos
 
@@ -52,6 +56,23 @@
   |---+--------+-----+---------------+-----+--------+------+-----+------+--------|
   #+TBLFM: @>$2=vsum(@2..@-2)::@>$5..@>$10=vsum(@2..@-2)
 
+  #+NAME:Feats
+  |--------------------+---------------------------|
+  | Name               | Description               |
+  |--------------------+---------------------------|
+  | Lightning Reflexes | +2 reflex saves           |
+  | Extra Lay on Hands | +2 uses of Lay on Hands   |
+  | Power Attack       | -2 attack  +4 (+6 2h) dmg |
+  |--------------------+---------------------------|
+
+  # Racial features, class features, etc...
+  #+NAME:Features
+  |------+-------------|
+  | Name | Description |
+  |------+-------------|
+  |      |             |
+  |------+-------------|
+
 * Defense
   #+NAME:Saves
   |---+---------------+-------+------+---------+---------+------|
@@ -100,6 +121,16 @@
   | # | CMB    |     8 |                 5 |       3 |    0 |      |
   |---+--------+-------+-------------------+---------+------+------|
   #+TBLFM: @2$3..@4$3=vsum($4..$7)::@2$4..@4$4=remote(Class, @>$BAB)::@2$5=remote(Stats, @2$Modifier)::@2$6=remote(Size, @2$1)::@3$5=remote(Stats, @3$Modifier)::@3$6=remote(Size, @2$1)::@4$5=remote(Stats, @2$Modifier)::@4$6=remote(Size, @2$1)
+
+  #+NAME:Weapons
+  |---+----------------------+---------+------------------+----------+----------+-------+------+------+-------|
+  | ! | Weapon               | Enhance | Attack Modifiers | Damage   | Crit     | Range | Size | Type | Notes |
+  |---+----------------------+---------+------------------+----------+----------+-------+------+------+-------|
+  |   | Masterwork Glaive    |         |               +9 | 1d10 + 4 | x3       | 10ft  |      | S    | Reach |
+  |   | Composite Longbow    |         |               +5 | 1d8      | x3       | 70ft  |      | P    |       |
+  |   | Longsword            |       1 |               +9 | 1d8 + 4  | 19-20/x2 |       |      | S    |       |
+  |   | Adamantine Longsword |         |               +8 | 1d8 + 3  | 19-20/x2 |       |      | S    |       |
+  |---+----------------------+---------+------------------+----------+----------+-------+------+------+-------|
 
 * Skills
   # To mark as a class skill just put a 1 in the class column, org mode doesn't
