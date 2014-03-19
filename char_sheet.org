@@ -1,6 +1,4 @@
-# Local Variables:
-# org-fontify-emphasized-text: nil
-# End:
+# -*- org-emphasis-alist: nil -*-
 
 #+TITLE: Pathfinder Character Sheet
 #+AUTHOR: Jesus Ramos
@@ -57,13 +55,13 @@
   #+TBLFM: @>$2=vsum(@2..@-2)::@>$5..@>$10=vsum(@2..@-2)
 
   #+NAME:Feats
-  |--------------------+---------------------------|
-  | Name               | Description               |
-  |--------------------+---------------------------|
-  | Lightning Reflexes | +2 reflex saves           |
-  | Extra Lay on Hands | +2 uses of Lay on Hands   |
-  | Power Attack       | -2 attack  +4 (+6 2h) dmg |
-  |--------------------+---------------------------|
+  |--------------------+--------------------------|
+  | Name               | Description              |
+  |--------------------+--------------------------|
+  | Lightning Reflexes | +2 reflex saves          |
+  | Extra Lay on Hands | +2 uses of Lay on Hands  |
+  | Power Attack       | -2 attack +4 (+6 2h) dmg |
+  |--------------------+--------------------------|
 
   # Racial features, class features, etc...
   #+NAME:Features
@@ -84,14 +82,6 @@
   |---+---------------+-------+------+---------+---------+------|
   #+TBLFM: $5=remote(Stats,@3$Modifier)::@2$3..@4$3=vsum($4..$7)::@2$4=remote(Class, @>$Fort)::@2$5=remote(Stats, @4$Modifier)::@3$4=remote(Class, @>$Ref)::@4$4=remote(Class, @>$Will)::@4$5=remote(Stats, @6$Modifier)
 
-  #+NAME:CMD
-  |---+-----+-------+------+-----+-----+-----+------+------|
-  | ! |     | Total | Base | BAB | Dex | Str | Size | Misc |
-  |---+-----+-------+------+-----+-----+-----+------+------|
-  | # | CMD |    18 |   10 |   5 |   0 |   3 |    0 |      |
-  |---+-----+-------+------+-----+-----+-----+------+------|
-  #+TBLFM: @2$3=vsum($4..$9)::@2$5=remote(Class, @>$BAB)::@2$6=remote(Stats, @3$Modifier)::@2$7=remote(Stats, @2$Modifier)::@2$8=remote(Size, @2$1)
-
   #+NAME:HP
   |---+--------------+----|
   | # | Base         | 49 |
@@ -105,11 +95,19 @@
   |---+-----------+-------+------+-------+--------+-----+------+-------+---------+---------+------|
   | ! | Type      | Total | Base | Armor | Shield | Dex | Size | Dodge | Natural | Deflect | Misc |
   |---+-----------+-------+------+-------+--------+-----+------+-------+---------+---------+------|
-  | # | AC        |    22 |   10 |     8 |      2 |   0 |    0 |       |       1 |       1 |      |
-  | # | Touch     |    11 |   10 |   N/A |    N/A |   0 |    0 |       |     N/A |       1 |      |
-  | # | Flat-foot |    20 |   10 |     8 |      0 | N/A |    0 | N/A   |       1 |       1 |      |
+  | # | AC        |    22 |   10 |     8 | 2      |   0 |    0 |       |       1 |       1 |      |
+  | # | Touch     |    11 |   10 |   N/A | N/A    |   0 |    0 |       |     N/A |       1 |      |
+  | # | Flat-foot |    20 |   10 |     8 | N/A    | N/A |    0 | N/A   |       1 |       1 |      |
   |---+-----------+-------+------+-------+--------+-----+------+-------+---------+---------+------|
   #+TBLFM: @2$3..@>$3=vsum($4..$12);N::@2$5=remote(Armor, @2$AC)::@2$6=remote(Armor, @3$AC)::@2$7..@3$7=min(remote(Stats, @3$Modifier), remote(Armor, @>$6)::@2$8..@>$8=remote(Size, @2$1)::@4$5=remote(Armor, @2$AC)
+
+  #+NAME:CMD
+  |---+-----+-------+------+-----+-----+-----+------+------|
+  | ! |     | Total | Base | BAB | Dex | Str | Size | Misc |
+  |---+-----+-------+------+-----+-----+-----+------+------|
+  | # | CMD |    18 |   10 |   5 |   0 |   3 |    0 |      |
+  |---+-----+-------+------+-----+-----+-----+------+------|
+  #+TBLFM: @2$3=vsum($4..$9)::@2$5=remote(Class, @>$BAB)::@2$6=remote(Stats, @3$Modifier)::@2$7=remote(Stats, @2$Modifier)::@2$8=remote(Size, @2$1)
 
 * Attacks
   #+NAME:Attacks
@@ -146,7 +144,7 @@
   | # |               |       | Bluff               | Cha  |     2 |       |       2 |         |      |
   | # |             1 |       | Climb               | Str  |    -5 |       |       3 |         |      |
   | # |               |     1 | Craft:              | Int  |     0 |       |       0 |         |      |
-  | # |               |       | Craft:              | Int  |     0 |       |       0 |         |      |
+  | # |               |     1 | Craft:              | Int  |     0 |       |       0 |         |      |
   | # |               |     1 | Diplomacy           | Cha  |    10 |     5 |       2 |       3 |      |
   | # |             1 |       | Disable Device      | Dex  |    -8 |       |       0 |         |      |
   | # |               |       | Disguise            | Cha  |     2 |       |       2 |         |      |
@@ -177,37 +175,48 @@
 ** Equipment
    # Just add new rows for new items
    #+NAME:Equipment
-   |---+----------+------+---------------|
-   | ! | Quantity | Name | Weight        |
-   |---+----------+------+---------------|
-   |   |          |      |               |
-   |---+----------+------+---------------|
-   |   |          |      | Total Weight: |
-   |---+----------+------+---------------|
-   | # |          |      | 0             |
-   |---+----------+------+---------------|
-   #+TBLFM: @4$4=vsum(@2$4..@-2$4)
+   |---+--------------------------------------+----------+---------------|
+   | ! | Name                                 | Quantity |        Weight |
+   |---+--------------------------------------+----------+---------------|
+   |   | Half-Plate Armor                     |          |            50 |
+   |   | Heavy Steel Shield                   |          |            15 |
+   |   | Longsword (+1)                       |          |             4 |
+   |   | Adamantine Longsword                 |          |             4 |
+   |   | Composite Shortbow                   |          |             2 |
+   |   | Arrows                               |       14 |             3 |
+   |   | Masterwork Glaive                    |          |            10 |
+   |   | Scroll Case                          |          |             1 |
+   |   | Waterproof Bag                       |          |           0.5 |
+   |   | Elf Bane Arrows (+1)                 |        2 |               |
+   |   | Composite Longbow                    |          |               |
+   |   | Masterwork Composite Longbow (Str+4) |          |               |
+   |---+--------------------------------------+----------+---------------|
+   |   |                                      |          | Total Weight: |
+   |---+--------------------------------------+----------+---------------|
+   | # |                                      |          |          89.5 |
+   |---+--------------------------------------+----------+---------------|
+   #+TBLFM: @>$4=vsum(@2$4..@-2$4)
 
    # Worn magic items
    #+NAME:WornEquipment
-   |-----------+---|
-   | Head      |   |
-   | Face      |   |
-   | Throat    |   |
-   | Shoulders |   |
-   | Body      |   |
-   | Torso     |   |
-   | Arms      |   |
-   | Hands     |   |
-   | Ring      |   |
-   | Ring      |   |
-   | Waist     |   |
-   | Feet      |   |
-   |-----------+---|
+   |-----------+------------------------------|
+   | Head      |                              |
+   | Face      |                              |
+   | Throat    | Amulet of Natural Armor (+1) |
+   | Shoulders | Cloak of Resistance (+1)     |
+   | Body      |                              |
+   | Torso     |                              |
+   | Arms      |                              |
+   | Hands     |                              |
+   | Ring      | Ring of Protection (+1)      |
+   | Ring      |                              |
+   | Waist     |                              |
+   | Feet      |                              |
+   |-----------+------------------------------|
 
    #+NAME:Armor
    |---+---------+------------------------+---------+----+---------+---------+----------------+------+------+----------|
-   | ! |         | Name                   | Enhance | AC | Max Dex | Penalty | Spell Fail (%) | Type | Size | Material |
+   | ! | Type    | Name                   | Enhance | AC | Max Dex | Penalty | Spell Fail (%) | Type | Size | Material |
    |---+---------+------------------------+---------+----+---------+---------+----------------+------+------+----------|
    |   | Armor   | Half-Plate             |         |  8 |       0 |      -7 |             40 |      | M    |          |
    |   | Shield  | Masterwork Heavy Steel |         |  2 |         |      -1 |             15 |      | M    |          |
@@ -217,15 +226,23 @@
    #+TBLFM: @4$5=vsum(@2$5..@-1$5)::@4$6=@2$6::@4$7=vsum(@2$7..@-1$7)::@4$8=vsum(@2$8..@-1$8)
 
 ** Magic Items
+   #+NAME:MagicItems
+   |--------------------------------+---------+--------------|
+   | Item                           | Charges | Caster Level |
+   |--------------------------------+---------+--------------|
+   | Scroll of Challenge Evil       |       2 | 4            |
+   | Potion of Enlarge Person       |       1 | min          |
+   | Potion of Cure Moderate Wounds |       1 | min          |
+   |--------------------------------+---------+--------------|
 
 ** Wealth
    #+NAME:Wealth
-   |----------+---|
-   | Platinum |   |
-   | Gold     |   |
-   | Silver   |   |
-   | Copper   |   |
-   |----------+---|
+   |----------+------|
+   | Platinum |      |
+   | Gold     | 1497 |
+   | Silver   |    3 |
+   | Copper   |    2 |
+   |----------+------|
 
 ** Bags and Containers
    #+NAME:Bags
@@ -236,5 +253,7 @@
    |-----------+--------+--------|
 
 * Spells
+
+** Special Abilities
 
 * Notes
