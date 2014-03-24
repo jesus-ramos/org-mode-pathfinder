@@ -40,6 +40,14 @@
   |---+--------------+-------+----------+------+----------+---------+------|
   #+TBLFM: @2$3..@2$3=vsum($5..$8)::@2$4..@7$4=floor(($3 - 10) / 2)
 
+  #+NAME:Initiative
+  |---+------------+-------+------+------|
+  | ! |            | Total | Base | Misc |
+  |---+------------+-------+------+------|
+  | # | Initiative |     0 |    0 |    0 |
+  |---+------------+-------+------+------|
+  #+TBLFM: @2$3=vsum(@2$4..@2$5)::@2$4=remote(Stats, @3$Modifier)
+
 * Class
   # Just hit TAB on the last row to recalculate when adding a new class
   #+NAME:Class
@@ -54,6 +62,11 @@
   |---+--------+-----+---------------+-----+--------+------+-----+------+--------|
   #+TBLFM: @>$2=vsum(@2..@-2)::@>$5..@>$10=vsum(@2..@-2)
 
+  #+NAME:Experience
+  |------------+---|
+  | Experience |   |
+  |------------+---|
+
   #+NAME:Feats
   |--------------------+--------------------------|
   | Name               | Description              |
@@ -63,13 +76,29 @@
   | Power Attack       | -2 attack +4 (+6 2h) dmg |
   |--------------------+--------------------------|
 
-  # Racial features, class features, etc...
   #+NAME:Features
-  |------+-------------|
-  | Name | Description |
-  |------+-------------|
-  |      |             |
-  |------+-------------|
+  |--------------------+-----------------------------------------------------|
+  | Name               | Description                                         |
+  |--------------------+-----------------------------------------------------|
+  | Darkvision         | 60ft darkvision                                     |
+  | Intimidating       | +2 intimidate checks                                |
+  | Orc Ferocity       | Once a day can continue fighting at 0hp for 1 round |
+  | Weapon Familiarity | Greataxe, Falchion, orc weapons                     |
+  |--------------------+-----------------------------------------------------|
+
+  #+NAME:ClassFeatures
+  |-----------------+-----------------------------------------------------------------|
+  | Name            | Description                                                     |
+  |-----------------+-----------------------------------------------------------------|
+  | Aura of Good    |                                                                 |
+  | Detect Evil     |                                                                 |
+  | Smite Evil      |                                                                 |
+  | Divine Grace    | +Charisma on saving throws                                      |
+  | Lay on Hands    |                                                                 |
+  | Aura of Courage | Immune to fear, allys within 10ft gain +4 bonus on fear effects |
+  | Divine Health   | Immune to diseases                                              |
+  | Mercy           | Remove fatigue                                                  |
+  |-----------------+-----------------------------------------------------------------|
 
 * Defense
   #+NAME:Saves
@@ -109,6 +138,12 @@
   |---+-----+-------+------+-----+-----+-----+------+------|
   #+TBLFM: @2$3=vsum($4..$9)::@2$5=remote(Class, @>$BAB)::@2$6=remote(Stats, @3$Modifier)::@2$7=remote(Stats, @2$Modifier)::@2$8=remote(Size, @2$1)
 
+  #+NAME:Resistances
+  |------------------+---|
+  | Damage Reduction |   |
+  | Spell Resistance |   |
+  |------------------+---|
+
 * Attacks
   #+NAME:Attacks
   |---+--------+-------+-------------------+---------+------+------|
@@ -129,6 +164,10 @@
   |   | Longsword            |       1 |               +9 | 1d8 + 4  | 19-20/x2 |       |      | S    |       |
   |   | Adamantine Longsword |         |               +8 | 1d8 + 3  | 19-20/x2 |       |      | S    |       |
   |---+----------------------+---------+------------------+----------+----------+-------+------+------+-------|
+
+** Attacking Notes
+   - Lay on Hands :: 2d6
+   - Power attack :: -2 attack +4 (+6 2h) damage
 
 * Skills
   # To mark as a class skill just put a 1 in the class column, org mode doesn't
@@ -168,7 +207,7 @@
   | # |             1 |       | Swim                | Str  |    -5 |       |       3 |         |      |
   | # |               |       | Use Magic Device    | Cha  |     2 |       |       2 |         |      |
   |---+---------------+-------+---------------------+------+-------+-------+---------+---------+------|
-  #+TBLFM: @2$6..@>$6=vsum($7..$10)+($2*remote(Armor, @>$Penalty))::@2$8..@>$8='(cond ((string= $5 "Str") remote(Stats, @2$Modifier)) ((string= $5 "Dex") remote(Stats, @3$Modifier)) ((string= $5 "Int") remote(Stats, @5$Modifier)) ((string= $5 "Wis") remote(Stats, @6$Modifier)) ((string= $5 "Cha") remote(Stats, @7$Modifier)))::@2$9..@>$9=if($3 > 0 && $7 > 0, 3, string(""))
+  #+TBLFM: @2$8..@>$8='(cond ((string= $5 "Str") remote(Stats, @2$Modifier)) ((string= $5 "Dex") remote(Stats, @3$Modifier)) ((string= $5 "Int") remote(Stats, @5$Modifier)) ((string= $5 "Wis") remote(Stats, @6$Modifier)) ((string= $5 "Cha") remote(Stats, @7$Modifier)))::@2$9..@>$9=if($3 > 0 && $7 > 0, 3, string(""))::@2$6..@>$6=vsum($7..$10)+($2*remote(Armor, @>$Penalty))
 
 * Inventory
 
@@ -253,7 +292,65 @@
    |-----------+--------+--------|
 
 * Spells
+  #+NAME:CastingStat
+  |--------------+-----|
+  | Casting Stat | Cha |
+  |--------------+-----|
+
+  #+NAME:SpellInfo
+  |---+---------+-------+-------+-------------+---------------+------+-------------|
+  | ! | Save DC | Level | Total | Class Bonus | Ability Bonus | Misc | Total Known |
+  |---+---------+-------+-------+-------------+---------------+------+-------------|
+  | # |      12 |     0 |       |             |             2 |      |             |
+  | # |      13 |     1 |     1 |           1 |             2 |      |             |
+  | # |      14 |     2 |       |             |             2 |      |             |
+  | # |      15 |     3 |       |             |             2 |      |             |
+  | # |      16 |     4 |       |             |             2 |      |             |
+  | # |      17 |     5 |       |             |             2 |      |             |
+  | # |      18 |     6 |       |             |             2 |      |             |
+  | # |      19 |     7 |       |             |             2 |      |             |
+  | # |      20 |     8 |       |             |             2 |      |             |
+  | # |      21 |     9 |       |             |             2 |      |             |
+  |---+---------+-------+-------+-------------+---------------+------+-------------|
+  #+TBLFM: @2$2..@>$2=10+$3+$6::@2$6..@>$6='(let ((stat remote(CastingStat, @1$2))) (cond ((string= stat "Int") remote(Stats, @5$Modifier)) ((string= stat "Wis") remote(Stats, @6$Modifier)) ((string= stat "Cha") remote(Stats, @7$Modifier))))::@3$4=if($5 > 0, max(0, ($6-$3)\4+1), string(""))
+
+  #+NAME:CasterLevel
+  |--------------+---|
+  | Caster Level | 2 |
+  |--------------+---|
+
+  #+NAME:Concentration
+  |---+---------------+-------+------+---------+------|
+  | ! |               | Total | Base | Ability | Misc |
+  |---+---------------+-------+------+---------+------|
+  | # | Concentration |    14 |   12 |       2 |      |
+  |---+---------------+-------+------+---------+------|
+  #+TBLFM: @2$3=vsum($4..$6)::@2$4=10+remote(CasterLevel, @1$2)::@2$5='(let ((stat remote(CastingStat, @1$2))) (cond ((string= stat "Int") remote(Stats, @5$Modifier)) ((string= stat "Wis") remote(Stats, @6$Modifier)) ((string= stat "Cha") remote(Stats, @7$Modifier))))
+
+  #+NAME:SpellRanges
+  |---+--------+-----|
+  | # | Close  |  30 |
+  | # | Medium | 120 |
+  | # | Long   | 480 |
+  |---+--------+-----|
+  #+TBLFM: @1$3=25+remote(CasterLevel, @1$2)*5/2::@2$3=100+remote(CasterLevel, @1$2)*10::@3$3=400+remote(CasterLevel, @1$2)*40
+
+  #+NAME:Spells
+  |------------+-------+-------------------------+-------------+---------|
+  | # Prepared | Level | Name                    | Description | Save DC |
+  |------------+-------+-------------------------+-------------+---------|
+  |            |     1 | [[http://paizo.com/pathfinderRPG/prd/advanced/spells/veilofPositiveEnergy.html][Veil of Positive Energy]] |             |         |
+  |            |     1 | [[http://paizo.com/pathfinderRPG/prd/spells/protectionFromEvil.html#_protection-from-evil][Protection From Evil]]    |             |         |
+  |            |     1 | [[http://paizo.com/pathfinderRPG/prd/spells/divineFavor.html#_divine-favor][Divine Favor]]            |             |         |
+  |------------+-------+-------------------------+-------------+---------|
 
 ** Special Abilities
-
-* Notes
+   #+NAME:SpecialAbilities
+   |-------------------------+------------------------|
+   | Name                    |               Uses/Day |
+   |-------------------------+------------------------|
+   | [[http://paizo.com/pathfinderRPG/prd/classes/paladin.html#_smite-evil][Smite Evil]]              |                      2 |
+   | [[http://paizo.com/pathfinderRPG/prd/classes/paladin.html#_lay-on-hands][Lay on Hands]]            |                      6 |
+   | [[http://paizo.com/pathfinderRPG/prd/advancedRaceGuide/coreRaces/halfOrcs.html#_orc-ferocity][Orc Ferocity]]            |                      1 |
+   | [[http://paizo.com/pathfinderRPG/prd/classes/paladin.html#_channel-positive-energy-paladin][Channel Positive Energy]] | 2 uses of Lay on Hands |
+   |-------------------------+------------------------|
