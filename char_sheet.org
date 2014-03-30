@@ -312,7 +312,7 @@
   | # |      20 |     8 |       |             |             2 |      |             |
   | # |      21 |     9 |       |             |             2 |      |             |
   |---+---------+-------+-------+-------------+---------------+------+-------------|
-  #+TBLFM: @2$2..@>$2=10+$3+$6::@2$6..@>$6='(let ((stat remote(CastingStat, @1$2))) (cond ((string= stat "Int") remote(Stats, @5$Modifier)) ((string= stat "Wis") remote(Stats, @6$Modifier)) ((string= stat "Cha") remote(Stats, @7$Modifier))))::@3$4=if($5 > 0, max(0, ($6-$3)\4+1), string(""))
+  #+TBLFM: @2$2..@>$2=10+$3+$6::@2$6..@>$6='(let ((stat remote(CastingStat, @1$2))) (cond ((string= stat "Int") remote(Stats, @5$Modifier)) ((string= stat "Wis") remote(Stats, @6$Modifier)) ((string= stat "Cha") remote(Stats, @7$Modifier))))::@3$4=if($5 > 0, max(0, ($6-$3)\4+1+$5), string(""))
 
   #+NAME:CasterLevel
   |--------------+---|
