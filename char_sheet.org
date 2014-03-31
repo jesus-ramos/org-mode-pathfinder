@@ -293,26 +293,27 @@
 
 * Spells
   #+NAME:CastingStat
-  |--------------+-----|
-  | Casting Stat | Cha |
-  |--------------+-----|
+  |---+--------------+-----+---|
+  | # | Casting Stat | Cha | 2 |
+  |---+--------------+-----+---|
+  #+TBLFM:@1$4='(cond ((string= $3 "Int") remote(Stats, @5$Modifier)) ((string= $3 "Wis") remote(Stats, @6$Modifier)) ((string= $3 "Cha") remote(Stats, @7$Modifier)))
 
   #+NAME:SpellInfo
   |---+---------+-------+-------+-------------+---------------+------+-------------|
   | ! | Save DC | Level | Total | Class Bonus | Ability Bonus | Misc | Total Known |
   |---+---------+-------+-------+-------------+---------------+------+-------------|
-  | # |      12 |     0 |       |             |             2 |      |             |
-  | # |      13 |     1 |     1 |           1 |             2 |      |             |
-  | # |      14 |     2 |       |             |             2 |      |             |
-  | # |      15 |     3 |       |             |             2 |      |             |
-  | # |      16 |     4 |       |             |             2 |      |             |
-  | # |      17 |     5 |       |             |             2 |      |             |
-  | # |      18 |     6 |       |             |             2 |      |             |
-  | # |      19 |     7 |       |             |             2 |      |             |
-  | # |      20 |     8 |       |             |             2 |      |             |
-  | # |      21 |     9 |       |             |             2 |      |             |
+  | # |      12 |     0 |       |             |           N/A |      |             |
+  | # |      13 |     1 |     2 |           1 |             1 |      |             |
+  | # |      14 |     2 |       |             |             0 |      |             |
+  | # |      15 |     3 |       |             |             0 |      |             |
+  | # |      16 |     4 |       |             |             0 |      |             |
+  | # |      17 |     5 |       |             |             0 |      |             |
+  | # |      18 |     6 |       |             |             0 |      |             |
+  | # |      19 |     7 |       |             |             0 |      |             |
+  | # |      20 |     8 |       |             |             0 |      |             |
+  | # |      21 |     9 |       |             |             0 |      |             |
   |---+---------+-------+-------+-------------+---------------+------+-------------|
-  #+TBLFM: @2$2..@>$2=10+$3+$6::@2$6..@>$6='(let ((stat remote(CastingStat, @1$2))) (cond ((string= stat "Int") remote(Stats, @5$Modifier)) ((string= stat "Wis") remote(Stats, @6$Modifier)) ((string= stat "Cha") remote(Stats, @7$Modifier))))::@3$4=if($5 > 0, max(0, ($6-$3)\4+1+$5), string(""))
+  #+TBLFM:@3$6..@>$6=max(0, (remote(CastingStat, @1$4)-$3)\4+1)::$4=if($5 > 0, vsum($5..$8), string(""))
 
   #+NAME:CasterLevel
   |--------------+---|
@@ -325,7 +326,7 @@
   |---+---------------+-------+------+---------+------|
   | # | Concentration |     4 |    2 |       2 |      |
   |---+---------------+-------+------+---------+------|
-  #+TBLFM: @2$3=vsum($4..$6)::@2$4=remote(CasterLevel, @1$2)::@2$5='(let ((stat remote(CastingStat, @1$2))) (cond ((string= stat "Int") remote(Stats, @5$Modifier)) ((string= stat "Wis") remote(Stats, @6$Modifier)) ((string= stat "Cha") remote(Stats, @7$Modifier))))
+  #+TBLFM: @2$3=vsum($4..$6)::@2$4=remote(CasterLevel, @1$2)::@2$5=remote(CastingStat, @1$4)
 
   #+NAME:SpellRanges
   |---+--------+-----|
