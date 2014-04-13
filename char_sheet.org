@@ -38,7 +38,7 @@
   | # | Wisdom       |    10 |        0 |   10 |          |         |      |
   | # | Charisma     |    14 |        2 |   14 |          |         |      |
   |---+--------------+-------+----------+------+----------+---------+------|
-  #+TBLFM: @2$3..@>$3=vsum($5..$8)::@2$4..@7$4=floor(($3 - 10) / 2)
+  #+TBLFM: @2$3..@2$3=vsum($5..$8)::@2$4..@7$4=floor(($3 - 10) / 2)
 
   #+NAME:Initiative
   |---+------------+-------+------+------|
@@ -176,39 +176,41 @@
   # stat depends on by modifying the Stat column. If a skill is affected by
   # armor penalty just mark it with a 1 in the Armor Penalty column
   #+NAME:Skills
-  |---+---------------+-------+---------------------+------+-------+-------+---------+---------+------|
-  | ! | Armor Penalty | Class | Skill               | Stat | Total | Ranks | Ability | Trained | Misc |
-  |---+---------------+-------+---------------------+------+-------+-------+---------+---------+------|
-  | # |             1 |       | Acrobatics          | Dex  |    -8 |       |       0 |         |      |
-  | # |               |       | Appraise            | Int  |     0 |       |       0 |         |      |
-  | # |               |       | Bluff               | Cha  |     2 |       |       2 |         |      |
-  | # |             1 |       | Climb               | Str  |    -5 |       |       3 |         |      |
-  | # |               |     1 | Craft:              | Int  |     0 |       |       0 |         |      |
-  | # |               |     1 | Craft:              | Int  |     0 |       |       0 |         |      |
-  | # |               |     1 | Diplomacy           | Cha  |    10 |     5 |       2 |       3 |      |
-  | # |             1 |       | Disable Device      | Dex  |    -8 |       |       0 |         |      |
-  | # |               |       | Disguise            | Cha  |     2 |       |       2 |         |      |
-  | # |             1 |       | Escape Artist       | Dex  |    -8 |       |       0 |         |      |
-  | # |             1 |       | Fly                 | Dex  |    -8 |       |       0 |         |      |
-  | # |               |     1 | Handle Animal       | Cha  |     8 |     3 |       2 |       3 |      |
-  | # |               |     1 | Heal                | Wis  |     0 |       |       0 |         |      |
-  | # |               |       | Intimidate          | Cha  |     4 |       |       2 |         |    2 |
-  | # |               |     1 | Knowledge: Nobility | Int  |     4 |     1 |       0 |       3 |      |
-  | # |               |     1 | Knowledge: Religion | Int  |     4 |     1 |       0 |       3 |      |
-  | # |               |       | Linguistics         | Int  |     0 |       |       0 |         |      |
-  | # |               |       | Perception          | Wis  |     0 |       |       0 |         |      |
-  | # |               |       | Perform:            | Cha  |     2 |       |       2 |         |      |
-  | # |               |     1 | Profession:         | Wis  |     0 |       |       0 |         |      |
-  | # |             1 |     1 | Ride                | Dex  |    -8 |       |       0 |         |      |
-  | # |               |     1 | Sense Motive        | Wis  |     0 |       |       0 |         |      |
-  | # |             1 |       | Sleight of Hand     | Dex  |    -8 |       |       0 |         |      |
-  | # |               |     1 | Spellcraft          | Int  |     0 |       |       0 |         |      |
-  | # |             1 |       | Stealth             | Dex  |    -8 |       |       0 |         |      |
-  | # |               |       | Survival            | Wis  |     0 |       |       0 |         |      |
-  | # |             1 |       | Swim                | Str  |    -5 |       |       3 |         |      |
-  | # |               |       | Use Magic Device    | Cha  |     2 |       |       2 |         |      |
-  |---+---------------+-------+---------------------+------+-------+-------+---------+---------+------|
-  #+TBLFM: @2$8..@>$8='(cond ((string= $5 "Str") remote(Stats, @2$Modifier)) ((string= $5 "Dex") remote(Stats, @3$Modifier)) ((string= $5 "Int") remote(Stats, @5$Modifier)) ((string= $5 "Wis") remote(Stats, @6$Modifier)) ((string= $5 "Cha") remote(Stats, @7$Modifier)))::@2$9..@>$9=if($3 > 0 && $7 > 0, 3, string(""))::@2$6..@>$6=vsum($7..$10)+($2*remote(Armor, @>$Penalty))
+  |---+-------------------+---------------+-------+---------------------+------+--------+-------+---------+---------+------|
+  | ! | Training Required | Armor Penalty | Class | Skill               | Stat |  Total | Ranks | Ability | Trained | Misc |
+  |---+-------------------+---------------+-------+---------------------+------+--------+-------+---------+---------+------|
+  | # |                   |             1 |       | Acrobatics          | Dex  |     -8 |       |       0 |         |      |
+  | # |                   |               |       | Appraise            | Int  |      0 |       |       0 |         |      |
+  | # |                   |               |       | Bluff               | Cha  |      2 |       |       2 |         |      |
+  | # |                   |             1 |       | Climb               | Str  |     -5 |       |       3 |         |      |
+  | # |                   |               |     1 | Craft:              | Int  |      0 |       |       0 |         |      |
+  | # |                   |               |     1 | Craft:              | Int  |      0 |       |       0 |         |      |
+  | # |                   |               |     1 | Diplomacy           | Cha  |     10 |     5 |       2 |       3 |      |
+  | # |                 1 |             1 |       | Disable Device      | Dex  |      - |       |       0 |         |      |
+  | # |                   |               |       | Disguise            | Cha  |      2 |       |       2 |         |      |
+  | # |                   |             1 |       | Escape Artist       | Dex  |     -8 |       |       0 |         |      |
+  | # |                   |             1 |       | Fly                 | Dex  |     -8 |       |       0 |         |      |
+  | # |                 1 |               |     1 | Handle Animal       | Cha  |      8 |     3 |       2 |       3 |      |
+  | # |                   |               |     1 | Heal                | Wis  |      0 |       |       0 |         |      |
+  | # |                   |               |       | Intimidate          | Cha  |      4 |       |       2 |         |    2 |
+  | # |                 1 |               |     1 | Knowledge: Nobility | Int  |      4 |     1 |       0 |       3 |      |
+  | # |                 1 |               |     1 | Knowledge: Religion | Int  |      4 |     1 |       0 |       3 |      |
+  | # |                 1 |               |       | Linguistics         | Int  |      - |       |       0 |         |      |
+  | # |                   |               |       | Perception          | Wis  |      0 |       |       0 |         |      |
+  | # |                   |               |       | Perform:            | Cha  |      2 |       |       2 |         |      |
+  | # |                 1 |               |     1 | Profession:         | Wis  |      - |       |       0 |         |      |
+  | # |                   |             1 |     1 | Ride                | Dex  |     -8 |       |       0 |         |      |
+  | # |                   |               |     1 | Sense Motive        | Wis  |      0 |       |       0 |         |      |
+  | # |                 1 |             1 |       | Sleight of Hand     | Dex  |      - |       |       0 |         |      |
+  | # |                 1 |               |     1 | Spellcraft          | Int  |      - |       |       0 |         |      |
+  | # |                   |             1 |       | Stealth             | Dex  |     -8 |       |       0 |         |      |
+  | # |                   |               |       | Survival            | Wis  |      0 |       |       0 |         |      |
+  | # |                   |             1 |       | Swim                | Str  |     -5 |       |       3 |         |      |
+  | # |                 1 |               |       | Use Magic Device    | Cha  |      - |       |       2 |         |      |
+  |---+-------------------+---------------+-------+---------------------+------+--------+-------+---------+---------+------|
+  | # |                   |               |       |                     |      | Total: |    10 |         |         |      |
+  |---+-------------------+---------------+-------+---------------------+------+--------+-------+---------+---------+------|
+  #+TBLFM: @II$7..@III$7=if(($2 > 0 && $8 > 0) || ($2 == 0) ,vsum($8..$11)+($3*remote(Armor, @>$Penalty)), string("-"))::@II$9..@III$9='(cond ((string= $6 "Str") remote(Stats, @2$Modifier)) ((string= $6 "Dex") remote(Stats, @3$Modifier)) ((string= $6 "Int") remote(Stats, @5$Modifier)) ((string= $6 "Wis") remote(Stats, @6$Modifier)) ((string= $6 "Cha") remote(Stats, @7$Modifier)))::@II$10..@III$10=if($4 > 0 && $8 > 0, 3, string(""))::@>$8=vsum(@2$8..@-1$8)
 
 * Inventory
 
@@ -305,7 +307,7 @@
   | ! | Save DC | Spell Level | Total | Class Bonus | Ability | Misc | Total Known |
   |---+---------+-------------+-------+-------------+---------+------+-------------|
   | # |         |           0 |       |             |         |      |             |
-  | # |      13 |           1 |     1 |           1 |       1 |      |             |
+  | # |      13 |           1 |     2 |           1 |       1 |      |             |
   | # |         |           2 |       |             |       1 |      |             |
   | # |         |           3 |       |             |       0 |      |             |
   | # |         |           4 |       |             |       0 |      |             |
