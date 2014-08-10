@@ -49,7 +49,6 @@
   #+TBLFM: @2$3=vsum(@2$4..@2$5)::@2$4=remote(Stats, @3$Modifier)
 
 * Class
-  # Just hit TAB on the last row to recalculate when adding a new class
   #+NAME:Class
   |---+--------+-----+---------------+-----+--------+------+-----+------+--------|
   | ! |     HP | HD  | Class Name    | BAB | Skills | Fort | Ref | Will | Levels |
@@ -317,7 +316,7 @@
   | # |         |           8 |       |             |       0 |      |             |
   | # |         |           9 |       |             |       0 |      |             |
   |---+---------+-------------+-------+-------------+---------+------+-------------|
-  #+TBLFM: $4=if($5 > 0, vsum($5..$8), string(""))::$2=if($4 > 0, 10+$3+remote(CastingStat, @1$4), string(""))::@3$6..@>$6=max(0, (remote(CastingStat, @1$4)-$3)\4+1)
+  #+TBLFM: $4=vsum($5..$8), string("")::$2=if($4 > 0, 10+$3+remote(CastingStat, @1$4), string(""))::@3$6..@>$6=max(0, (remote(CastingStat, @1$4)-$3)\4+1)
 
   #+NAME:CasterLevel
   |--------------+---|
